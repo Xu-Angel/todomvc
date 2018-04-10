@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+	</head>
+	<body>
+		<section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<input class="new-todo" placeholder="What needs to be done?" autofocus @keyup.enter="add" v-model="newTask">
+			</header>
+			<!-- This section should be hidden by default and shown when there are todos -->
+			<section class="main">
+				<input id="toggle-all" class="toggle-all" type="checkbox">
+				<label for="toggle-all" @click="toggleAll">Mark all as complete</label>
+				<ul class="todo-list">
+					<!-- These are here just to show the structure of the list items -->
+					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+					<li :class="{'completed':item.completed,'editing':item.id==isEditing}" v-for="item in tasks" v-if="show(item.completed)">
+						<div class="view">
+							<input class="toggle" type="checkbox" checked v-model="item.completed">
+							<label @dblclick="isEditing=item.id">{{item.name}}</label>
+							<button class="destroy" v-on:click="remove(item.id)"></button>
+						</div>
+						<input class="edit" v-model="item.name" @keyup.enter="isEditing=-1">
+					</li>
+				</ul>
+			</section>
+			<!-- This footer should hidden by default and shown when there are todos -->
+			<footer class="footer">
+				<!-- This should be `0 items left` by default -->
+				<span class="todo-count"><strong>{{activeNum}}</strong> item left</span>
+				<!-- Remove this if you don't implement routing -->
+				<ul class="filters">
+					<li>
+						<a :class="{selected:flag=='/'}" href="#/">All</a>
+					</li>
+					<li>
+						<a href="#/active" :class="{selected:flag.completed==false}">Active</a>
+					</li>
+					<li>
+						<a href="#/completed"  :class="{selected:flag.completed==true}">Completed</a>
+					</li>
+				</ul>
+				<!-- Hidden if no completed items are left ↓ -->
+				<button class="clear-completed" @click="clearAll" v-show="isShow()" >Clear completed</button>
+			</footer>
+		</section>
+		<!-- Scripts here. Don't remove ↓ -->
+		<script src="js/vue.js"></script>
+		<script src="js/director.js"></script>
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
